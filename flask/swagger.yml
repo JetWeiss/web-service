@@ -1,0 +1,384 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger Rest Article
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+  /client:
+    get:
+      operationId: client.read_all
+      tags:
+        - Client
+      summary: Read the entire set of client, sorted by lane
+      description: Read the entire set of client, sorted by lane
+      responses:
+        200:
+          description: Successfully read client set operation
+          schema:
+            type: array
+            items:
+              properties:
+                clientId:
+                  type: integer
+                  description: Id of the client
+                plazaId:
+                  type: string
+                  description: Number of the client
+                laneId:
+                  type: string
+                  description: Lane of the client
+                currentDhm:
+                  type: string
+                  description: Create/Update timestamp of the client
+                transactions:
+                  type: array
+                  items:
+                    properties:
+                      clientId:
+                        type: integer
+                        description: Id of the client
+                      plazaId:
+                        type: string
+                        description: Id of client this transaction is associated with
+                      frontLpn:
+                        type: string
+                        description: Id of this transaction
+                      TicketNumber:
+                        type: string
+                        description: FrontLpn of this transaction
+                      currentDhm:
+                        type: string
+                        description: Create/Update timestamp of this transaction
+
+    post:
+      operationId: client.create
+      tags:
+        - Client
+      summary: Create a client
+      description: Create a new client
+      parameters:
+        - name: client
+          in: body
+          description: Client to create
+          required: True
+          schema:
+            type: object
+            properties:
+              plazaId:
+                type: string
+                description: Lane of client number to create
+              laneId:
+                type: string
+                description: Number of client lane to create
+      responses:
+        201:
+          description: Successfully created client
+          schema:
+            properties:
+              clientId:
+                type: integer
+                description: Id of the client
+              plazaId:
+                type: string
+                description: Lane of client number
+              laneId:
+                type: string
+                description: Number of client lane
+              currentDhm:
+                type: string
+                description: Creation/Update timestamp of the client record
+
+  /client/{clientId}:
+    get:
+      operationId: client.read_one
+      tags:
+        - Client
+      summary: Read one client
+      description: Read one client
+      parameters:
+        - name: clientId
+          in: path
+          description: Id of the client to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read client data operation
+          schema:
+            type: object
+            properties:
+              plazaId:
+                type: string
+                description: Lane of client number
+              laneId:
+                type: string
+                description: Number of client lane
+              currentDhm:
+                type: string
+                description: Creation/Update timestamp of the client record
+              transactions:
+                type: array
+                items:
+                  properties:
+                    clientId:
+                      type: integer
+                      description: Id of the client
+                    plazaId:
+                      type: string
+                      description: Id of client this transaction is associated with
+                    frontLpn:
+                      type: string
+                      description: Id of this transaction
+                    TicketNumber:
+                      type: string
+                      description: FrontLpn of this transaction
+                    currentDhm:
+                      type: string
+                      description: Create/Update timestamp of this transaction
+
+    put:
+      operationId: client.update
+      tags:
+        - Client
+      summary: Update a client
+      description: Update a client
+      parameters:
+        - name: clientId
+          in: path
+          description: Id the client to update
+          type: integer
+          required: True
+        - name: client
+          in: body
+          schema:
+            type: object
+            properties:
+              plazaId:
+                type: string
+                description: First name of the person
+              laneId:
+                type: string
+                description: Last name of the person
+      responses:
+        200:
+          description: Successfully updated client
+          schema:
+            properties:
+              clientId:
+                type: integer
+                description: Id of the client
+              plazaId:
+                type: string
+                description: Lane of client number
+              laneId:
+                type: string
+                description: Number of client lane
+              currentDhm:
+                type: string
+                description: Creation/Update timestamp of the person record
+
+    delete:
+      operationId: client.delete
+      tags:
+        - Client
+      summary: Delete a client from the list
+      description: Delete a client
+      parameters:
+        - name: clientId
+          in: path
+          type: integer
+          description: Id of the client to delete
+          required: true
+      responses:
+        200:
+          description: Successfully deleted a client
+
+  /transactions:
+    get:
+      operationId: transactions.read_all
+      tags:
+        - Transactions
+      summary: Read the entire set of transactions for all client, sorted by currendDhm
+      description: Read the entire set of transactions for all client, sorted by currendDhm
+      responses:
+        200:
+          description: Successfully read transaction for all client operation
+          schema:
+            type: array
+            items:
+              properties:
+                frontLpn:
+                  type: string
+                  description: Id of the transaction
+                TicketNumber:
+                  type: string
+                  description: FrontLpn of the transaction
+                currentDhm:
+                  type: string
+                  description: Create/Update currentDhm of the transaction
+                client:
+                  type: object
+                  properties:
+                    plazaId:
+                      type: string
+                      description: Lane of client number
+                    laneId:
+                      type: string
+                      description: Number of client lane
+                    currentDhm:
+                      type: string
+                      description: Create/Update timestamp of associated person
+
+
+  /client/{clientId}/transactions:
+    post:
+      operationId: transactions.create
+      tags:
+        - Transactions
+      summary: Create a transaction associated with a client
+      description: Create a transaction associated with a client
+      parameters:
+        - name: clientId
+          in: path
+          description: Id of client associated with transaction
+          type: integer
+          required: True
+        - name: transaction
+          in: body
+          description: TicketNumber of the transaction to create
+          required: True
+          schema:
+            type: object
+            properties:
+              TicketNumber:
+                type: string
+                description: TicketNumber of the transaction to create
+      responses:
+        201:
+          description: Successfully created a transaction
+          schema:
+            properties:
+              clientId:
+                type: integer
+                description: Id of the client
+              plazaId:
+                type: string
+                description: Id of the client associated with the transaction
+              frontLpn:
+                type: string
+                description: Id of the created transaction
+              TicketNumber:
+                type: string
+                description: TicketNumber of the transaction
+              currentDhm:
+                type: string
+                description: Creation/Update currentDhm of the client record
+
+  /client/{clientId}/transactions/{TicketNumber}:
+    get:
+      operationId: transactions.read_one
+      tags:
+        - Transactions
+      summary: Read a particular transaction associated with a client
+      description: Read a particular transaction associated with a client
+      parameters:
+        - name: clientId
+          in: path
+          description: Id of client associated with transaction
+          type: integer
+          required: True
+        - name: TicketNumber
+          in: path
+          description: Id of transaction
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully read transaction for a client
+          schema:
+            type: object
+            properties:
+              plazaId:
+                type: string
+                description: Id of the transaction
+              frontLpn:
+                type: string
+                description: Id of the client transaction associated with
+              TicketNumber:
+                type: string
+                description: TicketNumber of the transaction
+              currentDhm:
+                type: string
+                description: Creation/Update currentDhm of the transaction record
+
+    put:
+      operationId: transactions.update
+      tags:
+        - Transactions
+      summary: Update a transaction associated with a client
+      description: Update a transaction associated with a client
+      parameters:
+        - name: clientId
+          in: path
+          description: Id the client to update
+          type: integer
+          required: True
+        - name: TicketNumber
+          in: path
+          description: Id of the transaction associated with a client
+          type: string
+          required: True
+        - name: transaction
+          in: body
+          schema:
+            type: object
+            properties:
+              frontLpn:
+                type: string
+                description: NicketNumber of the transaction to updated
+      responses:
+        200:
+          description: Successfully updated transaction
+          schema:
+            properties:
+              plazaId:
+                type: string
+                description: Id of the transaction associated with a client
+              frontLpn:
+                type: string
+                description: Id of the client in the database
+              TicketNumber:
+                type: string
+                description: TicketNumber of the updated note
+              currentDhm:
+                type: string
+                description: Creation/Update currendDhm of the transaction record
+
+    delete:
+      operationId: transactions.delete
+      tags:
+        - Transactions
+      summary: Delete a transaction associated with a client
+      description: Delete a transaction associated with a client
+      parameters:
+        - name: clientId
+          in: path
+          description: Id of client associated with transaction
+          type: integer
+          required: True
+        - name: TicketNumber
+          in: path
+          description: Id of transaction
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully deleted a transaction

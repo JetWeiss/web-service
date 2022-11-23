@@ -1,0 +1,35 @@
+{% extends "parent.html" %}
+{% block title %}Home Blog{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
+{% block page_name %}Toll road web-service {% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="blog">
+        <table>
+            <caption>Toll road clients</caption>
+            <thead>
+                <tr>
+                    <th>Creation/Update Timestamp</th>
+                    <th>Client</th>
+                    <th>Transaction</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="error hidden"></div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script type="module">
+    import MVC from "/static/js/home.js";
+    window.mvc = MVC;
+</script>
+{% endblock %}

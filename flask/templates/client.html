@@ -1,0 +1,54 @@
+{% extends "parent.html" %}
+{% block title %}Client{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/client.css">
+{% endblock %}
+
+{% block page_name %}Client Create/Update/Delete Page{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <input id="url_clientId" type="hidden" value="{{ clientId }}" />
+        <div class="section editor">
+             <div>
+                <span>Client ID:</span>
+                <span id="clientId"></span>
+            </div>
+            <label for="plazaId">Lane of client number
+                <input id="plazaId" type="text" />
+            </label>
+            <br />
+            <label for="laneId">Number of client lane
+                <input id="laneId" type="text" />
+            </label>
+            <br />
+            <button id="create">Create</button>
+            <button id="update">Update</button>
+            <button id="delete">Delete</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div class="client">
+            <table>
+                <caption>Client</caption>
+                <thead>
+                    <tr>
+                        <th>Creation/Update Timestamp</th>
+                        <th>Client</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="error"></div>
+    </div>
+    <div class="error">
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script type="module">
+    import * as MVC from "/static/js/client.js";
+    window.mvc = MVC;
+</script>
+{% endblock %}

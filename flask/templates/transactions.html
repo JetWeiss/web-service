@@ -1,0 +1,72 @@
+{% extends "parent.html" %}
+
+{% block title %}Notes{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/transactions.css">
+{% endblock %}
+
+{% block page_name %}Client Transaction Create/Update/Delete Page{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <input id="url_clientId" type="hidden" value="{{ clientId }}" />
+        <input id="url_TicketNumber" type="hidden" value="{{ TicketNumber }}" />
+        <div class="section display">
+            <div>
+                <span>clientId:</span>
+                <span id="clientId"></span>
+            </div>
+            <div>
+                <span>plazaId:</span>
+                <span id="plazaId"></span>
+            </div>
+            <div>
+                <span>laneId:</span>
+                <span id="laneId"></span>
+            </div>
+            <div>
+                <span>currentDhm:</span>
+                <span id="currentDhm"></span>
+            </div>
+        </div>
+        <div class="section editor">
+            <div>
+                <span>TicketNumber:</span>
+                <span id="TicketNumber"></span>
+            </div>
+            <label for="transaction">frontLpn
+                <input id="transaction" type="text" maxlength="200"/>
+            </label>
+            <br />
+            <button id="create">Create</button>
+            <button id="update">Update</button>
+            <button id="delete">Delete</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+    <div class="transactions">
+        <table>
+            <caption>Transactions</caption>
+            <thead>
+                <tr>
+                    <th class="currentDhm">Update Time</th>
+                    <th class="TicketNumber">Content</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="error"></div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script type="module">
+    import * as MVC from "/static/js/transactions.js";
+    window.mvc = MVC;
+</script>
+{% endblock %}
